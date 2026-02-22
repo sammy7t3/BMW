@@ -1,0 +1,48 @@
+.slider {
+    max-height: 640px;
+    overflow: hidden;
+    position: relative; /* Context for children */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Premium shadow */
+    border-radius: 8px; /* Rounded corners */
+}
+
+/* Pause animation on hover for inspection */
+.slider:hover figure {
+    animation-play-state: paused;
+}
+
+.slider figure {
+    position: relative;
+    width: 500%;
+    margin: 0;
+    left: 0;
+    animation: 20s slider infinite;
+    display: flex; /* Ensure images sit side-by-side cleanly */
+}
+
+.slider figure img {
+    width: 20%;
+    float: left;
+    transition: transform 0.3s ease; /* Smooth zoom transition */
+    object-fit: cover; /* Cover container properly */
+    height: 640px; /* Enforce height consistency */
+}
+
+/* Zoom effect on hover */
+.slider figure img:hover {
+    transform: scale(1.05);
+    z-index: 1; /* Bring above neighbors */
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2); /* Subtle glow */
+}
+
+@keyframes slider {
+    0% { left: 0%; }
+    20% { left: 0%; }
+    25% { left: -100%; }
+    45% { left: -100%; }
+    50% { left: -200%; }
+    70% { left: -200%; }
+    75% { left: -300%; }
+    95% { left: -300%; }
+    100% { left: -400%; }
+}

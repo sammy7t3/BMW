@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMW | The Ultimate Driving Machine</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bmw: {
+                            blue: '#0066B1',
+                            grey: '#6F6F6F',
+                            dark: '#1C1C1C'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: white;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .glass-nav {
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-height {
+            height: 90vh;
+        }
+
+        .slide-image {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            filter: brightness(0.6);
+            transition: filter 0.5s ease;
+        }
+
+        .slide-image:hover {
+            filter: brightness(0.8);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #666;
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased selection:bg-blue-600 selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="text-2xl font-bold tracking-tighter flex items-center gap-2 z-50 relative">
+                <div
+                    class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-600 to-white flex items-center justify-center p-[2px]">
+                    <div class="w-full h-full bg-black rounded-full flex items-center justify-center text-xs font-bold">
+                        BMW</div>
+                </div>
+                <span>SHEER DRIVING</span>
+            </div>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8 text-sm font-medium tracking-wide">
+                <a href="#gallery" class="hover:text-blue-500 transition-colors">MODELS</a>
+                <a href="#gallery" class="hover:text-blue-500 transition-colors">ELECTRIC</a>
+                <a href="https://configure.bmw.com/" target="_blank"
+                    class="hover:text-blue-500 transition-colors">CONFIGURATOR</a>
+                <a href="https://www.bmw.com/" target="_blank" class="hover:text-blue-500 transition-colors">MORE
+                    BMW</a>
+            </div>
+
+            <!-- Actions & Mobile Button -->
+            <div class="flex items-center gap-4 z-50 relative">
+                <button onclick="window.open('https://www.bmw.com/en/footer/find-a-dealer.html', '_blank')"
+                    class="hidden md:block bg-white text-black px-6 py-2 rounded-full font-bold hover:bg-bmw-blue hover:text-white transition-all transform hover:scale-105">
+                    Find Dealer
+                </button>
+                <!-- Mobile Hamburger -->
+                <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu"
+            class="fixed inset-0 bg-black/95 backdrop-blur-xl z-40 transform translate-x-full transition-transform duration-500 flex flex-col justify-center items-center space-y-8">
+            <a href="#gallery" onclick="closeMobileMenu()"
+                class="text-3xl font-bold hover:text-blue-500 tracking-wider">MODELS</a>
+            <a href="#gallery" onclick="closeMobileMenu()"
+                class="text-3xl font-bold hover:text-blue-500 tracking-wider">ELECTRIC</a>
+            <a href="https://configure.bmw.com/" target="_blank"
+                class="text-3xl font-bold hover:text-blue-500 tracking-wider">CONFIGURATOR</a>
+            <a href="https://www.bmw.com/" target="_blank"
+                class="text-3xl font-bold hover:text-blue-500 tracking-wider">MORE BMW</a>
+            <button onclick="window.open('https://www.bmw.com/en/footer/find-a-dealer.html', '_blank')"
+                class="bg-blue-600 text-white px-8 py-3 rounded-full font-bold text-xl mt-8">Find Dealer</button>
+        </div>
+    </nav>
+
+    <!-- Hero Slider -->
+    <section class="relative hero-height w-full overflow-hidden" id="hero">
+
+        <div id="slider-container" class="absolute inset-0 w-full h-full">
+            <!-- Slide 1 -->
+            <div class="slide absolute inset-0 opacity-0 transition-opacity duration-1000">
+                <img src="assets/images/m4red.jpg" class="slide-image" alt="BMW M4">
+                <div class="absolute inset-0 flex flex-col justify-center items-start px-6 md:px-24">
+                    <h2
+                        class="text-blue-500 font-bold mb-4 tracking-widest text-lg opacity-0 translate-y-10 slide-content">
+                        THE M4 COMPETITION</h2>
+                    <h1
+                        class="text-4xl md:text-8xl font-bold mb-6 leading-tight text-glow opacity-0 translate-y-10 slide-content">
+                        UNLEASH <br>THE BEAST.</h1>
+                    <button
+                        class="border border-white px-8 py-3 rounded-none hover:bg-white hover:text-black transition-all opacity-0 translate-y-10 slide-content">DISCOVER
+                        MORE</button>
+                </div>
+            </div>
+            <!-- Slide 2 -->
+            <div class="slide absolute inset-0 opacity-0 transition-opacity duration-1000">
+                <img src="assets/images/bmwred.png" class="slide-image" alt="BMW Red">
+                <div class="absolute inset-0 flex flex-col justify-center items-start px-6 md:px-24">
+                    <h2
+                        class="text-red-500 font-bold mb-4 tracking-widest text-lg opacity-0 translate-y-10 slide-content">
+                        PURE PERFORMANCE</h2>
+                    <h1
+                        class="text-4xl md:text-8xl font-bold mb-6 leading-tight text-glow opacity-0 translate-y-10 slide-content">
+                        ADRENALINE <br>REDEFINED.</h1>
+                    <button
+                        class="border border-white px-8 py-3 rounded-none hover:bg-white hover:text-black transition-all opacity-0 translate-y-10 slide-content">TEST
+                        DRIVE</button>
+                </div>
+            </div>
+            <!-- Slide 3 -->
+            <div class="slide absolute inset-0 opacity-0 transition-opacity duration-1000">
+                <img src="assets/images/bmw_m8.jpg" class="slide-image" alt="BMW M8">
+                <div class="absolute inset-0 flex flex-col justify-center items-start px-6 md:px-24">
+                    <h2
+                        class="text-gray-400 font-bold mb-4 tracking-widest text-lg opacity-0 translate-y-10 slide-content">
+                        LUXURY CLASS</h2>
+                    <h1
+                        class="text-4xl md:text-8xl font-bold mb-6 leading-tight text-glow opacity-0 translate-y-10 slide-content">
+                        ELEGANCE <br>IN MOTION.</h1>
+                    <button
+                        class="border border-white px-8 py-3 rounded-none hover:bg-white hover:text-black transition-all opacity-0 translate-y-10 slide-content">EXPLORE
+                        NOW</button>
+                </div>
+            </div>
+            <!-- Slide 4: M8 -->
+            <div class="slide absolute inset-0 opacity-0 transition-opacity duration-1000">
+                <img src="assets/images/bmw_m8.jpg" class="slide-image" alt="BMW M8">
+                <div class="absolute inset-0 flex flex-col justify-center items-start px-6 md:px-24">
+                    <h2
+                        class="text-blue-400 font-bold mb-4 tracking-widest text-lg opacity-0 translate-y-10 slide-content">
+                        THE M8</h2>
+                    <h1
+                        class="text-4xl md:text-8xl font-bold mb-6 leading-tight text-glow opacity-0 translate-y-10 slide-content">
+                        PURE <br>AGGRESSION.</h1>
+                    <button
+                        class="border border-white px-8 py-3 rounded-none hover:bg-white hover:text-black transition-all opacity-0 translate-y-10 slide-content">CONFIGURE</button>
+                </div>
+            </div>
+            <!-- Slide 5: XM -->
+            <div class="slide absolute inset-0 opacity-0 transition-opacity duration-1000">
+                <img src="assets/images/bmw_xm.jpg" class="slide-image" alt="BMW XM">
+                <div class="absolute inset-0 flex flex-col justify-center items-start px-6 md:px-24">
+                    <h2
+                        class="text-yellow-500 font-bold mb-4 tracking-widest text-lg opacity-0 translate-y-10 slide-content">
+                        THE XM</h2>
+                    <h1
+                        class="text-4xl md:text-8xl font-bold mb-6 leading-tight text-glow opacity-0 translate-y-10 slide-content">
+                        BEYOND <br>NORMS.</h1>
+                    <button
+                        class="border border-white px-8 py-3 rounded-none hover:bg-white hover:text-black transition-all opacity-0 translate-y-10 slide-content">DISCOVER</button>
+                </div>
+            </div>
+            <!-- Slide 6: Z4 -->
+            <div class="slide absolute inset-0 opacity-0 transition-opacity duration-1000">
+                <img src="assets/images/bmw_z4.jpg" class="slide-image" alt="BMW Z4">
+                <div class="absolute inset-0 flex flex-col justify-center items-start px-6 md:px-24">
+                    <h2
+                        class="text-orange-500 font-bold mb-4 tracking-widest text-lg opacity-0 translate-y-10 slide-content">
+                        THE Z4</h2>
+                    <h1
+                        class="text-4xl md:text-8xl font-bold mb-6 leading-tight text-glow opacity-0 translate-y-10 slide-content">
+                        FREEDOM <br>CALLS.</h1>
+                    <button
+                        class="border border-white px-8 py-3 rounded-none hover:bg-white hover:text-black transition-all opacity-0 translate-y-10 slide-content">BUILD
+                        YOURS</button>
+                </div>
+            </div>
+            <!-- Slide 7: i5 -->
+            <div class="slide absolute inset-0 opacity-0 transition-opacity duration-1000">
+                <img src="assets/images/bmw_i5.jpg" class="slide-image" alt="BMW i5">
+                <div class="absolute inset-0 flex flex-col justify-center items-start px-6 md:px-24">
+                    <h2
+                        class="text-green-400 font-bold mb-4 tracking-widest text-lg opacity-0 translate-y-10 slide-content">
+                        THE i5</h2>
+                    <h1
+                        class="text-4xl md:text-8xl font-bold mb-6 leading-tight text-glow opacity-0 translate-y-10 slide-content">
+                        ELECTRIC <br>EVOLUTION.</h1>
+                    <button
+                        class="border border-white px-8 py-3 rounded-none hover:bg-white hover:text-black transition-all opacity-0 translate-y-10 slide-content">LEARN
+                        MORE</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slider Controls -->
+        <div class="absolute bottom-10 right-10 flex space-x-4 z-20">
+            <button id="prevBtn"
+                class="w-12 h-12 border border-white/30 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-all">
+                &larr;
+            </button>
+            <button id="nextBtn"
+                class="w-12 h-12 border border-white/30 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-all">
+                &rarr;
+            </button>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="absolute bottom-0 left-0 h-1 bg-white/20 w-full">
+            <div id="progress" class="h-full bg-blue-600 w-0"></div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="mb-16">
+            <h3 class="text-blue-500 font-bold tracking-widest mb-2">EXPERIENCE THE RANGE</h3>
+            <h2 class="text-4xl font-bold">ELECTRIFIED & PASSIONATE</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Card 1: BMW iX -->
+            <div class="group relative overflow-hidden rounded-xl h-96 cursor-pointer">
+                <img src="assets/images/b.m.w.g.jpg"
+                    class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    alt="BMW iX">
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                    <h3
+                        class="text-2xl font-bold translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        BMW iX</h3>
+                    <p
+                        class="text-gray-300 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+                        Born Electric.</p>
+                </div>
+            </div>
+            <!-- Card 2: BMW M3 -->
+            <div class="group relative overflow-hidden rounded-xl h-96 cursor-pointer">
+                <img src="assets/images/m4red.jpg"
+                    class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    alt="BMW M3 Competition">
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                    <h3
+                        class="text-2xl font-bold translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        BMW M4</h3>
+                    <p
+                        class="text-gray-300 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+                        The Master of Performance.</p>
+                </div>
+            </div>
+            <!-- Card 3: BMW Concept (Legacy but kept for layout) -->
+            <div class="group relative overflow-hidden rounded-xl h-96 cursor-pointer lg:col-span-1">
+                <img src="assets/images/0fa3ae61-46ef-4f6e-8d18-5c0edec4e428.jpg"
+                    class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    alt="BMW Concept">
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                    <h3
+                        class="text-2xl font-bold translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        BMW Concept</h3>
+                    <p
+                        class="text-gray-300 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+                        The future takes shape.</p>
+                </div>
+            </div>
+            <!-- Card 4: BMW i7 -->
+            <div class="group relative overflow-hidden rounded-xl h-96 cursor-pointer lg:col-span-2">
+                <img src="assets/images/bmw_i5.jpg"
+                    class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    alt="BMW i5">
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                    <h3
+                        class="text-2xl font-bold translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        BMW i5</h3>
+                    <p
+                        class="text-gray-300 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+                        The Electric Executive.</p>
+                </div>
+            </div>
+            <!-- Card 5: BMW XM -->
+            <div class="group relative overflow-hidden rounded-xl h-96 cursor-pointer">
+                <img src="assets/images/bmw_xm.jpg"
+                    class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    alt="BMW XM">
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                    <h3
+                        class="text-2xl font-bold translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        BMW XM</h3>
+                    <p
+                        class="text-gray-300 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+                        Extravagance Redefined.</p>
+                </div>
+            </div>
+            <!-- Card 6: BMW Z4 -->
+            <div class="group relative overflow-hidden rounded-xl h-96 cursor-pointer">
+                <img src="assets/images/bmw_z4.jpg"
+                    class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    alt="BMW Z4">
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                    <h3
+                        class="text-2xl font-bold translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        BMW Z4</h3>
+                    <p
+                        class="text-gray-300 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+                        Open-Top Thrills.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-white/10 py-12 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+            <p>&copy; 2025 BMW AG. All rights reserved.</p>
+            <div class="flex space-x-6 mt-4 md:mt-0">
+                <a href="#" class="hover:text-white transition-colors">Legal Disclaimer</a>
+                <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition-colors">Cookie Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Logic -->
+    <script>
+        // Slider Logic
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+        let slideInterval;
+        const progress = document.getElementById('progress');
+
+        function initSlider() {
+            // Show first slide
+            showSlide(0);
+            startAutoPlay();
+        }
+
+        function showSlide(index) {
+            // Reset all slides
+            slides.forEach((slide, i) => {
+                if (i === index) {
+                    slide.classList.remove('opacity-0', 'pointer-events-none');
+                    slide.classList.add('opacity-100', 'z-10');
+                    animateSlideContent(slide);
+                } else {
+                    slide.classList.remove('opacity-100', 'z-10');
+                    slide.classList.add('opacity-0', 'pointer-events-none');
+                }
+            });
+            currentSlide = index;
+            // Reset Progress bar animation
+            resetProgress();
+        }
+
+        function nextSlide() {
+            let next = (currentSlide + 1) % slides.length;
+            showSlide(next);
+        }
+
+        function prevSlide() {
+            let prev = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(prev);
+        }
+
+        function animateSlideContent(slide) {
+            const content = slide.querySelectorAll('.slide-content');
+            gsap.fromTo(content,
+                { y: 50, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.8, stagger: 0.2, ease: "power3.out", delay: 0.3 }
+            );
+        }
+
+        function resetProgress() {
+            // Using GSAP for progress bar
+            gsap.fromTo(progress,
+                { width: "0%" },
+                { width: "100%", duration: 5, ease: "none", onComplete: nextSlide }
+            );
+        }
+
+        function startAutoPlay() {
+            // Handled by GSAP onComplete
+        }
+
+        // Event Listeners
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            gsap.killTweensOf(progress);
+            nextSlide();
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            gsap.killTweensOf(progress);
+            prevSlide();
+        });
+
+        // Initialize
+        initSlider();
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('py-2');
+                nav.classList.remove('py-4');
+            } else {
+                nav.classList.add('py-4');
+                nav.classList.remove('py-2');
+            }
+        });
+
+        // Mobile Menu Logic
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        let isMenuOpen = false;
+
+        mobileBtn.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                mobileMenu.classList.remove('translate-x-full');
+                // Animate links in
+                gsap.fromTo(mobileMenu.children,
+                    { y: 20, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, delay: 0.3 }
+                );
+            } else {
+                mobileMenu.classList.add('translate-x-full');
+            }
+        });
+
+        function closeMobileMenu() {
+            isMenuOpen = false;
+            mobileMenu.classList.add('translate-x-full');
+        }
+    </script>
+</body>
+
+</html>
